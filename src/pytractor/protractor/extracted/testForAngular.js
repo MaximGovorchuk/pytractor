@@ -6,7 +6,7 @@ try { return (function (attempts, asyncCallback) {
   };
   var check = function(n) {
     try {
-      if (window.angular && window.angular.resumeBootstrap) {
+      if (typeof window !== "undefined" && window.angular && window.angular.resumeBootstrap) {
         callback([true, null]);
       } else if (n < 1) {
         if (window.angular) {

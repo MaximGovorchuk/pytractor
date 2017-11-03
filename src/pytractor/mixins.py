@@ -28,6 +28,8 @@ from pkg_resources import resource_string
 
 from .exceptions import AngularNotFoundException
 
+ABOUT_BLANK = 'about:blank'
+
 CLIENT_SCRIPTS_DIR = 'protractor/extracted'
 DEFER_LABEL = 'NG_DEFER_BOOTSTRAP!'
 # These are commands that need synchronization with the angular app.
@@ -109,7 +111,9 @@ class WebDriverMixin(object):
                                            floor(self._test_timeout / 1000))
 
     def _location_equals(self, location):
-        result = self.execute_script('return window.location.href')
+        result = self.execute_script(
+            'return typeof window == "undefined" || window.location == undefined ? "'
+            + ABOUT_BLANK + '" : window.location.href')
         return result == location
 
     @property
@@ -200,7 +204,7 @@ class WebDriverMixin(object):
         return elements
 
     def get(self, url):
-        super(WebDriverMixin, self).get('about:blank')
+        super(WebDriverMixin, self).get(ABOUT_BLANK)
         full_url = urljoin(str(self._base_url), str(url))
         self.execute_script(
             """
@@ -209,7 +213,7 @@ class WebDriverMixin(object):
             """.format(DEFER_LABEL, full_url)
         )
         wait = WebDriverWait(self, self._test_timeout)
-        wait.until_not(self._location_equals, 'about:blank')
+        wait.until_not(self._location_equals, ABOUT_BLANK)
 
         if not self.ignore_synchronization:
             test_result = self._test_for_angular()
