@@ -1,4 +1,4 @@
-recursive-include src/pytractor/protractor/extracted *.js
-recursive-include src/pytractor/tests/functional/testapp *
+recursive-include src/pytractor_custom/protractor/extracted *.js
+recursive-include src/pytractor_custom/tests/functional/testapp *
 include DESCRIPTION.rst
 include NOTICE
